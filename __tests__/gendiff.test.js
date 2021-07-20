@@ -8,7 +8,6 @@ import gendiff from '../index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 test('gendiff json as module use', () => {
   expect(gendiff(JSON.stringify({}), JSON.stringify({}))).toBe('{}');
 
@@ -75,11 +74,11 @@ test('gendiff json as lib use', () => {
     '- proxy: 123.234.53.22',
     '- timeout: 50',
   ].join('\n\t')}\n}`);
-  
+
   expect(gendiff(emptyJSON, json1)).toBe(`{\n\t${[
     '+ follow: false',
     '+ host: hexlet.io',
     '+ proxy: 123.234.53.22',
     '+ timeout: 50',
   ].join('\n\t')}\n}`);
-})
+});
