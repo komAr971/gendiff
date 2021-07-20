@@ -1,5 +1,22 @@
 import _ from 'lodash';
 
+const gendiffString = (key, value1, value2) => {
+  if (value1 === value2) {
+    return [`\t  ${key}: ${value1}`];
+  }
+
+  const result = [];
+
+  if (value1 !== undefined) {
+    result.push(`\t- ${key}: ${value1}`);
+  }
+  if (value2 !== undefined) {
+    result.push(`\t+ ${key}: ${value2}`);
+  }
+
+  return result;
+};
+
 const genDiff = (json1, json2) => {
   const obj1 = JSON.parse(json1);
   const obj2 = JSON.parse(json2);
@@ -13,23 +30,7 @@ const genDiff = (json1, json2) => {
   const result = [];
 
   for (let i = 0; i < keys.length; i += 1) {
-    if (obj1[keys[i]] === obj2[keys[i]]) {
-      result.push(`\t  ${keys[i]}: ${obj1[keys[i]]}`);
-      continue;
-    }
-
-    if (!_.has(obj2, keys[i])) {
-      result.push(`\t- ${keys[i]}: ${obj1[keys[i]]}`);
-      continue;
-    }
-
-    if (!_.has(obj1, keys[i])) {
-      result.push(`\t+ ${keys[i]}: ${obj2[keys[i]]}`);
-      continue;
-    }
-
-    result.push(`\t- ${keys[i]}: ${obj1[keys[i]]}`);
-    result.push(`\t+ ${keys[i]}: ${obj2[keys[i]]}`);
+    result.push(...gendiffString(keys[i], obj1[keys[i]], obj2[keys[i]]));
   }
 
   return `{\n${result.join('\n')}\n}`;
