@@ -1,7 +1,7 @@
 install: install-deps
 
 install-deps:
-	npm cli
+	npm ci
 
 test:
 	npm test
