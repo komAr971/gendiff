@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - 8.2.1
+  node
 
 dist: trusty
 
@@ -11,7 +11,7 @@ addons:
 env:
   global:
     - CC_TEST_REPORTER_ID=${{ secrets.TEST_REPORTER_ID }}
-    
+
 before_script:
   - yarn global add nyc
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
