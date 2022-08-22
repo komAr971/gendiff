@@ -2,6 +2,7 @@ import { test, expect } from '@jest/globals';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
+import yaml from 'js-yaml';
 
 import gendiff from '../index.js';
 
@@ -24,28 +25,34 @@ test('gendiff json as module use', () => {
     host: 'hexlet.io',
   };
 
-  expect(gendiff(JSON.stringify(obj1), JSON.stringify(obj2))).toBe(`{\n\t${[
-    '- follow: false',
-    '  host: hexlet.io',
-    '- proxy: 123.234.53.22',
-    '- timeout: 50',
-    '+ timeout: 20',
-    '+ verbose: true',
-  ].join('\n\t')}\n}`);
+  expect(gendiff(JSON.stringify(obj1), JSON.stringify(obj2))).toBe(
+    `{\n\t${[
+      '- follow: false',
+      '  host: hexlet.io',
+      '- proxy: 123.234.53.22',
+      '- timeout: 50',
+      '+ timeout: 20',
+      '+ verbose: true',
+    ].join('\n\t')}\n}`,
+  );
 
-  expect(gendiff(JSON.stringify(obj1), JSON.stringify({}))).toBe(`{\n\t${[
-    '- follow: false',
-    '- host: hexlet.io',
-    '- proxy: 123.234.53.22',
-    '- timeout: 50',
-  ].join('\n\t')}\n}`);
+  expect(gendiff(JSON.stringify(obj1), JSON.stringify({}))).toBe(
+    `{\n\t${[
+      '- follow: false',
+      '- host: hexlet.io',
+      '- proxy: 123.234.53.22',
+      '- timeout: 50',
+    ].join('\n\t')}\n}`,
+  );
 
-  expect(gendiff(JSON.stringify({}), JSON.stringify(obj1))).toBe(`{\n\t${[
-    '+ follow: false',
-    '+ host: hexlet.io',
-    '+ proxy: 123.234.53.22',
-    '+ timeout: 50',
-  ].join('\n\t')}\n}`);
+  expect(gendiff(JSON.stringify({}), JSON.stringify(obj1))).toBe(
+    `{\n\t${[
+      '+ follow: false',
+      '+ host: hexlet.io',
+      '+ proxy: 123.234.53.22',
+      '+ timeout: 50',
+    ].join('\n\t')}\n}`,
+  );
 });
 
 test('gendiff json as lib use', () => {
@@ -59,26 +66,73 @@ test('gendiff json as lib use', () => {
 
   expect(gendiff(emptyJSON, emptyJSON)).toBe('{}');
 
-  expect(gendiff(json1, json2)).toBe(`{\n\t${[
-    '- follow: false',
-    '  host: hexlet.io',
-    '- proxy: 123.234.53.22',
-    '- timeout: 50',
-    '+ timeout: 20',
-    '+ verbose: true',
-  ].join('\n\t')}\n}`);
+  expect(gendiff(json1, json2)).toBe(
+    `{\n\t${[
+      '- follow: false',
+      '  host: hexlet.io',
+      '- proxy: 123.234.53.22',
+      '- timeout: 50',
+      '+ timeout: 20',
+      '+ verbose: true',
+    ].join('\n\t')}\n}`,
+  );
 
-  expect(gendiff(json1, emptyJSON)).toBe(`{\n\t${[
-    '- follow: false',
-    '- host: hexlet.io',
-    '- proxy: 123.234.53.22',
-    '- timeout: 50',
-  ].join('\n\t')}\n}`);
+  expect(gendiff(json1, emptyJSON)).toBe(
+    `{\n\t${[
+      '- follow: false',
+      '- host: hexlet.io',
+      '- proxy: 123.234.53.22',
+      '- timeout: 50',
+    ].join('\n\t')}\n}`,
+  );
 
-  expect(gendiff(emptyJSON, json1)).toBe(`{\n\t${[
-    '+ follow: false',
-    '+ host: hexlet.io',
-    '+ proxy: 123.234.53.22',
-    '+ timeout: 50',
-  ].join('\n\t')}\n}`);
+  expect(gendiff(emptyJSON, json1)).toBe(
+    `{\n\t${[
+      '+ follow: false',
+      '+ host: hexlet.io',
+      '+ proxy: 123.234.53.22',
+      '+ timeout: 50',
+    ].join('\n\t')}\n}`,
+  );
+});
+
+test('gendiff yaml as lib use', () => {
+  const filepath1 = path.join(__dirname, '..', '__fixtures__', 'yaml1.yaml');
+  const filepath2 = path.join(__dirname, '..', '__fixtures__', 'yaml2.yml');
+  const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyYAML.yml');
+
+  const yaml1 = yaml.load(fs.readFileSync(path.resolve(filepath1), 'utf8'));
+  const yaml2 = yaml.load(fs.readFileSync(path.resolve(filepath2), 'utf8'));
+  const emptyYAML = yaml.load(fs.readFileSync(path.resolve(filepath3), 'utf8'));
+
+  expect(gendiff(emptyYAML, emptyYAML)).toBe('{}');
+
+  expect(gendiff(yaml1, yaml2)).toBe(
+    `{\n\t${[
+      '- follow: false',
+      '  host: hexlet.io',
+      '- proxy: 123.234.53.22',
+      '- timeout: 50',
+      '+ timeout: 20',
+      '+ verbose: true',
+    ].join('\n\t')}\n}`,
+  );
+
+  expect(gendiff(yaml1, emptyYAML)).toBe(
+    `{\n\t${[
+      '- follow: false',
+      '- host: hexlet.io',
+      '- proxy: 123.234.53.22',
+      '- timeout: 50',
+    ].join('\n\t')}\n}`,
+  );
+
+  expect(gendiff(emptyYAML, yaml1)).toBe(
+    `{\n\t${[
+      '+ follow: false',
+      '+ host: hexlet.io',
+      '+ proxy: 123.234.53.22',
+      '+ timeout: 50',
+    ].join('\n\t')}\n}`,
+  );
 });
