@@ -1,10 +1,9 @@
 import { test, expect } from '@jest/globals';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import fs from 'fs';
-import yaml from 'js-yaml';
 
 import gendiff from '../index.js';
+import parsers from '../src/parsers';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,9 +59,9 @@ test('gendiff json as lib use', () => {
   const filepath2 = path.join(__dirname, '..', '__fixtures__', 'json2.json');
   const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyJSON.json');
 
-  const json1 = fs.readFileSync(path.resolve(filepath1), 'utf8');
-  const json2 = fs.readFileSync(path.resolve(filepath2), 'utf8');
-  const emptyJSON = fs.readFileSync(path.resolve(filepath3), 'utf8');
+  const json1 = parsers(filepath1);
+  const json2 = parsers(filepath2);
+  const emptyJSON = parsers(filepath3);
 
   expect(gendiff(emptyJSON, emptyJSON)).toBe('{}');
 
@@ -101,9 +100,9 @@ test('gendiff yaml as lib use', () => {
   const filepath2 = path.join(__dirname, '..', '__fixtures__', 'yaml2.yml');
   const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyYAML.yml');
 
-  const yaml1 = yaml.load(fs.readFileSync(path.resolve(filepath1), 'utf8'));
-  const yaml2 = yaml.load(fs.readFileSync(path.resolve(filepath2), 'utf8'));
-  const emptyYAML = yaml.load(fs.readFileSync(path.resolve(filepath3), 'utf8'));
+  const yaml1 = parsers(filepath1);
+  const yaml2 = parsers(filepath2);
+  const emptyYAML = parsers(filepath3);
 
   expect(gendiff(emptyYAML, emptyYAML)).toBe('{}');
 
