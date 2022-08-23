@@ -2,14 +2,13 @@ import { test, expect } from '@jest/globals';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-import gendiff from '../index.js';
-import parsers from '../src/parsers';
+import gendiff, { parsers } from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test('gendiff json as module use', () => {
-  expect(gendiff(JSON.stringify({}), JSON.stringify({}))).toBe('{}');
+  expect(gendiff({}, {})).toBe('{}');
 
   const obj1 = {
     host: 'hexlet.io',
@@ -24,7 +23,7 @@ test('gendiff json as module use', () => {
     host: 'hexlet.io',
   };
 
-  expect(gendiff(JSON.stringify(obj1), JSON.stringify(obj2))).toBe(
+  expect(gendiff(obj1, obj2)).toBe(
     `{\n\t${[
       '- follow: false',
       '  host: hexlet.io',
@@ -35,7 +34,7 @@ test('gendiff json as module use', () => {
     ].join('\n\t')}\n}`,
   );
 
-  expect(gendiff(JSON.stringify(obj1), JSON.stringify({}))).toBe(
+  expect(gendiff(obj1, {})).toBe(
     `{\n\t${[
       '- follow: false',
       '- host: hexlet.io',
@@ -44,7 +43,7 @@ test('gendiff json as module use', () => {
     ].join('\n\t')}\n}`,
   );
 
-  expect(gendiff(JSON.stringify({}), JSON.stringify(obj1))).toBe(
+  expect(gendiff({}, obj1)).toBe(
     `{\n\t${[
       '+ follow: false',
       '+ host: hexlet.io',

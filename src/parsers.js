@@ -7,11 +7,11 @@ const parsers = (filepath) => {
   const data = fs.readFileSync(path.resolve(filepath), 'utf8');
 
   if (extention === '.json') {
-    return data;
+    return JSON.parse(data);
   }
 
   if (extention === '.yaml' || extention === '.yml') {
-    return JSON.stringify(yaml.load(data));
+    return yaml.load(data);
   }
 
   return data;

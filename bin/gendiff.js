@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import fs from 'fs';
-import path from 'path';
 
-import gendiff from '../index.js';
+import gendiff, { parsers } from '../index.js';
 
 const program = new Command();
 
@@ -14,9 +12,9 @@ program
   .argument('<filepath1>')
   .argument('<filepath2>')
   .action((filepath1, filepath2) => {
-    const json1 = fs.readFileSync(path.resolve(filepath1), 'utf8');
-    const json2 = fs.readFileSync(path.resolve(filepath2), 'utf8');
-    console.log(gendiff(json1, json2));
+    const obj1 = parsers(filepath1);
+    const obj2 = parsers(filepath2);
+    console.log(gendiff(obj1, obj2));
   });
 
 program.parse(process.argv);

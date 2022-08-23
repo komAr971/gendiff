@@ -17,10 +17,7 @@ const gendiffString = (key, value1, value2) => {
   return result;
 };
 
-const genDiff = (json1, json2) => {
-  const obj1 = JSON.parse(json1);
-  const obj2 = JSON.parse(json2);
-
+const genDiff = (obj1, obj2) => {
   const keys = _.uniq([...Object.keys(obj1), ...Object.keys(obj2)].sort());
 
   if (keys.length === 0) {
