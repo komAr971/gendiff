@@ -1,21 +1,5 @@
+/* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
-
-const gendiffString = (key, value1, value2) => {
-  if (value1 === value2) {
-    return [`\t  ${key}: ${value1}`];
-  }
-
-  const result = [];
-
-  if (value1 !== undefined) {
-    result.push(`\t- ${key}: ${value1}`);
-  }
-  if (value2 !== undefined) {
-    result.push(`\t+ ${key}: ${value2}`);
-  }
-
-  return result;
-};
 
 const genDiff = (obj1, obj2) => {
   const keys = _.uniq([...Object.keys(obj1), ...Object.keys(obj2)].sort());
@@ -24,13 +8,22 @@ const genDiff = (obj1, obj2) => {
     return '{}';
   }
 
-  const result = [];
+  const result = {};
 
-  for (let i = 0; i < keys.length; i += 1) {
-    result.push(...gendiffString(keys[i], obj1[keys[i]], obj2[keys[i]]));
+  for (const key of keys) {
+    if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
+      result[key] = genDiff(obj1[key], obj2[key]);
+    } else if (!_.has(obj1, key)) {
+      result[key] = '+';
+    } else if (!_.has(obj2, key)) {
+      result[key] = '-';
+    } else {
+      result[key] = obj1[key] === obj2[key] ? '=' : '-+';
+    }
   }
+  console.log(result);
 
-  return `{\n${result.join('\n')}\n}`;
+  return result;
 };
 
 export default genDiff;
