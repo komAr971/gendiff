@@ -1,22 +1,5 @@
 import _ from 'lodash';
 
-const gendiffString = (key, value1, value2) => {
-  if (value1 === value2) {
-    return [`\t  ${key}: ${value1}`];
-  }
-
-  const result = [];
-
-  if (value1 !== undefined) {
-    result.push(`\t- ${key}: ${value1}`);
-  }
-  if (value2 !== undefined) {
-    result.push(`\t+ ${key}: ${value2}`);
-  }
-
-  return result;
-};
-
 const genDiff = (obj1, obj2) => {
   const keys = _.uniq([...Object.keys(obj1), ...Object.keys(obj2)].sort());
 
@@ -24,13 +7,54 @@ const genDiff = (obj1, obj2) => {
     return '{}';
   }
 
-  const result = [];
+  return keys.map((key) => {
+    if (!_.has(obj1, key)) {
+      return {
+        key,
+        type: 'added',
+        value: obj2[key],
+      };
+    }
 
-  for (let i = 0; i < keys.length; i += 1) {
-    result.push(...gendiffString(keys[i], obj1[keys[i]], obj2[keys[i]]));
-  }
+    if (!_.has(obj2, key)) {
+      return {
+        key,
+        type: 'deleted',
+        value: obj1[key],
+      };
+    }
 
-  return `{\n${result.join('\n')}\n}`;
+    if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
+      if (_.isEqual(obj1[key], obj2[key])) {
+        return {
+          key,
+          type: 'not changed',
+          value: obj1[key],
+        };
+      }
+
+      return {
+        key,
+        type: 'changed inside',
+        children: genDiff(obj1[key], obj2[key]),
+      };
+    }
+
+    if (obj1[key] === obj2[key]) {
+      return {
+        key,
+        type: 'not changed',
+        value: obj1[key],
+      };
+    }
+
+    return {
+      key,
+      type: 'changed',
+      oldValue: obj1[key],
+      newValue: obj2[key],
+    };
+  });
 };
 
 export default genDiff;
