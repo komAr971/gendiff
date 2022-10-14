@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import stylish from './formater';
+import format from './formatters/index';
 
 const genDiffTree = (obj1, obj2) => {
   const keys = _.uniq([...Object.keys(obj1), ...Object.keys(obj2)].sort());
 
   if (keys.length === 0) {
-    return '{}';
+    return {};
   }
 
   return keys.map((key) => {
@@ -34,15 +34,7 @@ const genDiffTree = (obj1, obj2) => {
 const genDiff = (obj1, obj2, formatName = 'stylish') => {
   const diffTree = genDiffTree(obj1, obj2);
 
-  if (diffTree === '{}') {
-    return diffTree;
-  }
-
-  if (formatName === 'stylish') {
-    return stylish(diffTree);
-  }
-
-  return diffTree;
+  return format(diffTree, formatName);
 };
 
 export default genDiff;

@@ -1,6 +1,10 @@
 import _ from 'lodash';
 
 const stylish = (diff) => {
+  if (_.isEmpty(diff)) {
+    return '{}';
+  }
+
   const replacer = ' ';
   const spacesCount = 4;
   const prefix = {
