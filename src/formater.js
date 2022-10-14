@@ -1,12 +1,13 @@
 import _ from 'lodash';
 
 const stylish = (diff) => {
-  if (diff === '{}') {
-    return '{}';
-  }
-
   const replacer = ' ';
   const spacesCount = 4;
+  const prefix = {
+    added: '+ ',
+    deleted: '- ',
+    'not changed': '  ',
+  };
 
   const iter = (currentValue, depth) => {
     if (!_.isObject(currentValue)) {
@@ -21,32 +22,19 @@ const stylish = (diff) => {
     const indentSize = depth * spacesCount;
     const currentIndent = `${replacer.repeat(indentSize - 2)}`;
     const bracketIndent = replacer.repeat(indentSize - spacesCount);
-    const type = currentValue?.type;
-    if (type === 'added') {
-      return `${currentIndent}+ ${currentValue.key}: ${iter(
-        currentValue.value,
-        depth + 1,
-      )}`;
+    const { type, key, value } = currentValue;
+
+    if (_.includes(['added', 'deleted', 'not changed'], type)) {
+      return `${currentIndent}${prefix[type]}${key}: ${iter(value, depth + 1)}`;
     }
-    if (type === 'deleted') {
-      return `${currentIndent}- ${currentValue.key}: ${iter(
-        currentValue.value,
-        depth + 1,
-      )}`;
-    }
-    if (type === 'not changed') {
-      return `${currentIndent}  ${currentValue.key}: ${iter(
-        currentValue.value,
-        depth + 1,
-      )}`;
-    }
+
     if (type === 'changed') {
       return [
-        `${currentIndent}- ${currentValue.key}: ${iter(
+        `${currentIndent}${prefix.deleted}${key}: ${iter(
           currentValue.oldValue,
           depth + 1,
         )}`,
-        `${currentIndent}+ ${currentValue.key}: ${iter(
+        `${currentIndent}${prefix.added}${key}: ${iter(
           currentValue.newValue,
           depth + 1,
         )}`,
@@ -54,14 +42,14 @@ const stylish = (diff) => {
     }
     if (type === 'changed inside') {
       return [
-        `${currentIndent}  ${currentValue.key}: {`,
+        `${currentIndent}${prefix['not changed']}${key}: {`,
         `${iter(currentValue.children, depth + 1)}`,
         `${bracketIndent}${replacer.repeat(spacesCount)}}`,
       ].join('\n');
     }
 
     const lines = Object.entries(currentValue).map(
-      ([key, val]) => `${currentIndent}  ${key}: ${iter(val, depth + 1)}`,
+      ([Key, Val]) => `${currentIndent}  ${Key}: ${iter(Val, depth + 1)}`,
     );
     return ['{', ...lines, `${bracketIndent}}`].join('\n');
   };

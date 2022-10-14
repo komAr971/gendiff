@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 
-import gendiff, { parsers, stylish } from '../index.js';
+import gendiff, { parsers } from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -75,10 +75,10 @@ test('gendiff json as module use', () => {
     },
   };
 
-  expect(stylish(gendiff({}, {}))).toBe('{}');
-  expect(stylish(gendiff(obj1, obj2))).toBe(expected12);
-  expect(stylish(gendiff(obj1, {}))).toBe(expected1e);
-  expect(stylish(gendiff({}, obj1))).toBe(expectede1);
+  expect(gendiff({}, {}, 'stylish')).toBe('{}');
+  expect(gendiff(obj1, obj2, 'stylish')).toBe(expected12);
+  expect(gendiff(obj1, {}, 'stylish')).toBe(expected1e);
+  expect(gendiff({}, obj1, 'stylish')).toBe(expectede1);
 });
 
 test('gendiff json as lib use', () => {
@@ -90,10 +90,10 @@ test('gendiff json as lib use', () => {
   const json2 = parsers(filepath2);
   const emptyJSON = parsers(filepath3);
 
-  expect(stylish(gendiff(emptyJSON, emptyJSON))).toBe('{}');
-  expect(stylish(gendiff(json1, json2))).toBe(expected12);
-  expect(stylish(gendiff(json1, emptyJSON))).toBe(expected1e);
-  expect(stylish(gendiff(emptyJSON, json1))).toBe(expectede1);
+  expect(gendiff(emptyJSON, emptyJSON, 'stylish')).toBe('{}');
+  expect(gendiff(json1, json2, 'stylish')).toBe(expected12);
+  expect(gendiff(json1, emptyJSON, 'stylish')).toBe(expected1e);
+  expect(gendiff(emptyJSON, json1, 'stylish')).toBe(expectede1);
 });
 
 test('gendiff yaml as lib use', () => {
@@ -105,8 +105,8 @@ test('gendiff yaml as lib use', () => {
   const yaml2 = parsers(filepath2);
   const emptyYAML = parsers(filepath3);
 
-  expect(stylish(gendiff(emptyYAML, emptyYAML))).toBe('{}');
-  expect(stylish(gendiff(yaml1, yaml2))).toBe(expected12);
-  expect(stylish(gendiff(yaml1, emptyYAML))).toBe(expected1e);
-  expect(stylish(gendiff(emptyYAML, yaml1))).toBe(expectede1);
+  expect(gendiff(emptyYAML, emptyYAML, 'stylish')).toBe('{}');
+  expect(gendiff(yaml1, yaml2, 'stylish')).toBe(expected12);
+  expect(gendiff(yaml1, emptyYAML, 'stylish')).toBe(expected1e);
+  expect(gendiff(emptyYAML, yaml1, 'stylish')).toBe(expectede1);
 });
