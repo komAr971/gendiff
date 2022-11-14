@@ -3,7 +3,8 @@ import format from './formatters/index.js';
 import parsers from './parsers.js';
 
 const genDiffTree = (obj1, obj2) => {
-  const keys = _.uniq([...Object.keys(obj1), ...Object.keys(obj2)].sort());
+  const sortedKeys = _.sortBy([...Object.keys(obj1), ...Object.keys(obj2)]);
+  const keys = _.sortedUniq(sortedKeys);
 
   if (keys.length === 0) {
     return {};
