@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import format from './formatters/index';
+import format from './formatters/index.js';
 
 const genDiffTree = (obj1, obj2) => {
   const keys = _.uniq([...Object.keys(obj1), ...Object.keys(obj2)].sort());
@@ -14,18 +14,19 @@ const genDiffTree = (obj1, obj2) => {
       diffItem.type = 'added';
       diffItem.value = obj2[key];
     } else if (!_.has(obj2, key)) {
-      diffItem.type = 'deleted';
+      diffItem.type = 'removed';
       diffItem.value = obj1[key];
     } else if (_.isEqual(obj1[key], obj2[key])) {
-      diffItem.type = 'not changed';
+      diffItem.type = 'not updated';
       diffItem.value = obj1[key];
-    } else if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
-      diffItem.type = 'changed inside';
-      diffItem.children = genDiffTree(obj1[key], obj2[key]);
     } else {
-      diffItem.type = 'changed';
-      diffItem.oldValue = obj1[key];
-      diffItem.newValue = obj2[key];
+      diffItem.type = 'updated';
+      if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
+        diffItem.children = genDiffTree(obj1[key], obj2[key]);
+      } else {
+        diffItem.oldValue = obj1[key];
+        diffItem.newValue = obj2[key];
+      }
     }
     return diffItem;
   });
@@ -38,3 +39,4 @@ const genDiff = (obj1, obj2, formatName = 'stylish') => {
 };
 
 export default genDiff;
+export { genDiffTree };

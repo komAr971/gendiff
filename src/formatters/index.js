@@ -1,5 +1,5 @@
-import stylish from './stylish';
-import plain from './plain';
+import stylish from './stylish.js';
+import plain from './plain.js';
 
 const format = (diffTree, formatName) => {
   if (formatName === 'plain') {

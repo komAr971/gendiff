@@ -9,8 +9,8 @@ const stylish = (diff) => {
   const spacesCount = 4;
   const prefix = {
     added: '+ ',
-    deleted: '- ',
-    'not changed': '  ',
+    removed: '- ',
+    'not updated': '  ',
   };
 
   const iter = (currentValue, depth) => {
@@ -19,8 +19,7 @@ const stylish = (diff) => {
     }
 
     if (Array.isArray(currentValue)) {
-      const lines = currentValue.map((line) => iter(line, depth));
-      return lines.join('\n');
+      return currentValue.map((line) => iter(line, depth)).join('\n');
     }
 
     const indentSize = depth * spacesCount;
@@ -28,13 +27,20 @@ const stylish = (diff) => {
     const bracketIndent = replacer.repeat(indentSize - spacesCount);
     const { type, key, value } = currentValue;
 
-    if (_.includes(['added', 'deleted', 'not changed'], type)) {
+    if (_.includes(['added', 'removed', 'not updated'], type)) {
       return `${currentIndent}${prefix[type]}${key}: ${iter(value, depth + 1)}`;
     }
 
-    if (type === 'changed') {
+    if (type === 'updated') {
+      if (currentValue.children) {
+        return [
+          `${currentIndent}${prefix['not updated']}${key}: {`,
+          `${iter(currentValue.children, depth + 1)}`,
+          `${bracketIndent}${replacer.repeat(spacesCount)}}`,
+        ].join('\n');
+      }
       return [
-        `${currentIndent}${prefix.deleted}${key}: ${iter(
+        `${currentIndent}${prefix.removed}${key}: ${iter(
           currentValue.oldValue,
           depth + 1,
         )}`,
@@ -42,13 +48,6 @@ const stylish = (diff) => {
           currentValue.newValue,
           depth + 1,
         )}`,
-      ].join('\n');
-    }
-    if (type === 'changed inside') {
-      return [
-        `${currentIndent}${prefix['not changed']}${key}: {`,
-        `${iter(currentValue.children, depth + 1)}`,
-        `${bracketIndent}${replacer.repeat(spacesCount)}}`,
       ].join('\n');
     }
 

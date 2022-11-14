@@ -246,7 +246,7 @@ test('gendiff(plain) yaml as lib use', () => {
   const yaml2 = parsers(filepath2);
   const emptyYAML = parsers(filepath3);
 
-  expect(gendiff(emptyYAML, emptyYAML, 'plain')).toBe('{}');
+  expect(gendiff(emptyYAML, emptyYAML, 'plain')).toBe('');
   expect(gendiff(yaml1, yaml2, 'plain')).toBe(expected12Plain);
   expect(gendiff(yaml1, emptyYAML, 'plain')).toBe(expected1ePlain);
   expect(gendiff(emptyYAML, yaml1, 'plain')).toBe(expectede1Plain);
