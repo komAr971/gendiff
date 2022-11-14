@@ -59,4 +59,4 @@ const obj2 = {
   },
 };
 
-console.log(JSON.stringify(genDiffTree(obj1, obj2)));
+console.log(JSON.stringify(genDiffTree(obj1, obj2), null, 2));
