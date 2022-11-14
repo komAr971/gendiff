@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import format from './formatters/index.js';
+import parsers from './parsers.js';
 
 const genDiffTree = (obj1, obj2) => {
   const keys = _.uniq([...Object.keys(obj1), ...Object.keys(obj2)].sort());
@@ -32,7 +33,10 @@ const genDiffTree = (obj1, obj2) => {
   });
 };
 
-const genDiff = (obj1, obj2, formatName = 'stylish') => {
+const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
+  const obj1 = parsers(filepath1);
+  const obj2 = parsers(filepath2);
+
   const diffTree = genDiffTree(obj1, obj2);
 
   return format(diffTree, formatName);

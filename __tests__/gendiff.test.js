@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 
-import gendiff, { parsers } from '../index.js';
+import gendiff from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -86,85 +86,15 @@ beforeAll(() => {
   expectede1Json = fs.readFileSync(filepathe1Json, 'utf8');
 });
 
-test('gendiff(stylish) json as module use', () => {
-  const obj1 = {
-    common: {
-      setting1: 'Value 1',
-      setting2: 200,
-      setting3: true,
-      setting6: {
-        key: 'value',
-        doge: {
-          wow: '',
-        },
-      },
-    },
-    group1: {
-      baz: 'bas',
-      foo: 'bar',
-      nest: {
-        key: 'value',
-      },
-    },
-    group2: {
-      abc: 12345,
-      deep: {
-        id: 45,
-      },
-    },
-  };
-
-  const obj2 = {
-    common: {
-      follow: false,
-      setting1: 'Value 1',
-      setting3: null,
-      setting4: 'blah blah',
-      setting5: {
-        key5: 'value5',
-      },
-      setting6: {
-        key: 'value',
-        ops: 'vops',
-        doge: {
-          wow: 'so much',
-        },
-      },
-    },
-    group1: {
-      foo: 'bar',
-      baz: 'bars',
-      nest: 'str',
-    },
-    group3: {
-      deep: {
-        id: {
-          number: 45,
-        },
-      },
-      fee: 100500,
-    },
-  };
-
-  expect(gendiff({}, {}, 'stylish')).toBe('{}');
-  expect(gendiff(obj1, obj2, 'stylish')).toBe(expected12Stylish);
-  expect(gendiff(obj1, {}, 'stylish')).toBe(expected1eStylish);
-  expect(gendiff({}, obj1, 'stylish')).toBe(expectede1Stylish);
-});
-
 test('gendiff(stylish) json as lib use', () => {
   const filepath1 = path.join(__dirname, '..', '__fixtures__', 'json1.json');
   const filepath2 = path.join(__dirname, '..', '__fixtures__', 'json2.json');
   const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyJSON.json');
 
-  const json1 = parsers(filepath1);
-  const json2 = parsers(filepath2);
-  const emptyJSON = parsers(filepath3);
-
-  expect(gendiff(emptyJSON, emptyJSON, 'stylish')).toBe('{}');
-  expect(gendiff(json1, json2, 'stylish')).toBe(expected12Stylish);
-  expect(gendiff(json1, emptyJSON, 'stylish')).toBe(expected1eStylish);
-  expect(gendiff(emptyJSON, json1, 'stylish')).toBe(expectede1Stylish);
+  expect(gendiff(filepath3, filepath3, 'stylish')).toBe('{}');
+  expect(gendiff(filepath1, filepath2, 'stylish')).toBe(expected12Stylish);
+  expect(gendiff(filepath1, filepath3, 'stylish')).toBe(expected1eStylish);
+  expect(gendiff(filepath3, filepath1, 'stylish')).toBe(expectede1Stylish);
 });
 
 test('gendiff(stylish) yaml as lib use', () => {
@@ -172,80 +102,10 @@ test('gendiff(stylish) yaml as lib use', () => {
   const filepath2 = path.join(__dirname, '..', '__fixtures__', 'yaml2.yml');
   const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyYAML.yml');
 
-  const yaml1 = parsers(filepath1);
-  const yaml2 = parsers(filepath2);
-  const emptyYAML = parsers(filepath3);
-
-  expect(gendiff(emptyYAML, emptyYAML, 'stylish')).toBe('{}');
-  expect(gendiff(yaml1, yaml2, 'stylish')).toBe(expected12Stylish);
-  expect(gendiff(yaml1, emptyYAML, 'stylish')).toBe(expected1eStylish);
-  expect(gendiff(emptyYAML, yaml1, 'stylish')).toBe(expectede1Stylish);
-});
-
-test('gendiff(plain) json as module use', () => {
-  const obj1 = {
-    common: {
-      setting1: 'Value 1',
-      setting2: 200,
-      setting3: true,
-      setting6: {
-        key: 'value',
-        doge: {
-          wow: '',
-        },
-      },
-    },
-    group1: {
-      baz: 'bas',
-      foo: 'bar',
-      nest: {
-        key: 'value',
-      },
-    },
-    group2: {
-      abc: 12345,
-      deep: {
-        id: 45,
-      },
-    },
-  };
-
-  const obj2 = {
-    common: {
-      follow: false,
-      setting1: 'Value 1',
-      setting3: null,
-      setting4: 'blah blah',
-      setting5: {
-        key5: 'value5',
-      },
-      setting6: {
-        key: 'value',
-        ops: 'vops',
-        doge: {
-          wow: 'so much',
-        },
-      },
-    },
-    group1: {
-      foo: 'bar',
-      baz: 'bars',
-      nest: 'str',
-    },
-    group3: {
-      deep: {
-        id: {
-          number: 45,
-        },
-      },
-      fee: 100500,
-    },
-  };
-
-  expect(gendiff({}, {}, 'plain')).toBe('');
-  expect(gendiff(obj1, obj2, 'plain')).toBe(expected12Plain);
-  expect(gendiff(obj1, {}, 'plain')).toBe(expected1ePlain);
-  expect(gendiff({}, obj1, 'plain')).toBe(expectede1Plain);
+  expect(gendiff(filepath3, filepath3, 'stylish')).toBe('{}');
+  expect(gendiff(filepath1, filepath2, 'stylish')).toBe(expected12Stylish);
+  expect(gendiff(filepath1, filepath3, 'stylish')).toBe(expected1eStylish);
+  expect(gendiff(filepath3, filepath1, 'stylish')).toBe(expectede1Stylish);
 });
 
 test('gendiff(plain) json as lib use', () => {
@@ -253,14 +113,10 @@ test('gendiff(plain) json as lib use', () => {
   const filepath2 = path.join(__dirname, '..', '__fixtures__', 'json2.json');
   const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyJSON.json');
 
-  const json1 = parsers(filepath1);
-  const json2 = parsers(filepath2);
-  const emptyJSON = parsers(filepath3);
-
-  expect(gendiff(emptyJSON, emptyJSON, 'plain')).toBe('');
-  expect(gendiff(json1, json2, 'plain')).toBe(expected12Plain);
-  expect(gendiff(json1, emptyJSON, 'plain')).toBe(expected1ePlain);
-  expect(gendiff(emptyJSON, json1, 'plain')).toBe(expectede1Plain);
+  expect(gendiff(filepath3, filepath3, 'plain')).toBe('');
+  expect(gendiff(filepath1, filepath2, 'plain')).toBe(expected12Plain);
+  expect(gendiff(filepath1, filepath3, 'plain')).toBe(expected1ePlain);
+  expect(gendiff(filepath3, filepath1, 'plain')).toBe(expectede1Plain);
 });
 
 test('gendiff(plain) yaml as lib use', () => {
@@ -268,80 +124,10 @@ test('gendiff(plain) yaml as lib use', () => {
   const filepath2 = path.join(__dirname, '..', '__fixtures__', 'yaml2.yml');
   const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyYAML.yml');
 
-  const yaml1 = parsers(filepath1);
-  const yaml2 = parsers(filepath2);
-  const emptyYAML = parsers(filepath3);
-
-  expect(gendiff(emptyYAML, emptyYAML, 'plain')).toBe('');
-  expect(gendiff(yaml1, yaml2, 'plain')).toBe(expected12Plain);
-  expect(gendiff(yaml1, emptyYAML, 'plain')).toBe(expected1ePlain);
-  expect(gendiff(emptyYAML, yaml1, 'plain')).toBe(expectede1Plain);
-});
-
-test('gendiff(json) json as module use', () => {
-  const obj1 = {
-    common: {
-      setting1: 'Value 1',
-      setting2: 200,
-      setting3: true,
-      setting6: {
-        key: 'value',
-        doge: {
-          wow: '',
-        },
-      },
-    },
-    group1: {
-      baz: 'bas',
-      foo: 'bar',
-      nest: {
-        key: 'value',
-      },
-    },
-    group2: {
-      abc: 12345,
-      deep: {
-        id: 45,
-      },
-    },
-  };
-
-  const obj2 = {
-    common: {
-      follow: false,
-      setting1: 'Value 1',
-      setting3: null,
-      setting4: 'blah blah',
-      setting5: {
-        key5: 'value5',
-      },
-      setting6: {
-        key: 'value',
-        ops: 'vops',
-        doge: {
-          wow: 'so much',
-        },
-      },
-    },
-    group1: {
-      foo: 'bar',
-      baz: 'bars',
-      nest: 'str',
-    },
-    group3: {
-      deep: {
-        id: {
-          number: 45,
-        },
-      },
-      fee: 100500,
-    },
-  };
-
-  expect(gendiff({}, {}, 'json')).toBe('{}');
-  expect(gendiff(obj1, obj2, 'json')).toBe(expected12Json);
-  expect(gendiff(obj1, {}, 'json')).toBe(expected1eJson);
-  expect(gendiff({}, obj1, 'json')).toBe(expectede1Json);
+  expect(gendiff(filepath3, filepath3, 'plain')).toBe('');
+  expect(gendiff(filepath1, filepath2, 'plain')).toBe(expected12Plain);
+  expect(gendiff(filepath1, filepath3, 'plain')).toBe(expected1ePlain);
+  expect(gendiff(filepath3, filepath1, 'plain')).toBe(expectede1Plain);
 });
 
 test('gendiff(json) json as lib use', () => {
@@ -349,14 +135,10 @@ test('gendiff(json) json as lib use', () => {
   const filepath2 = path.join(__dirname, '..', '__fixtures__', 'json2.json');
   const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyJSON.json');
 
-  const json1 = parsers(filepath1);
-  const json2 = parsers(filepath2);
-  const emptyJSON = parsers(filepath3);
-
-  expect(gendiff(emptyJSON, emptyJSON, 'json')).toBe('{}');
-  expect(gendiff(json1, json2, 'json')).toBe(expected12Json);
-  expect(gendiff(json1, emptyJSON, 'json')).toBe(expected1eJson);
-  expect(gendiff(emptyJSON, json1, 'json')).toBe(expectede1Json);
+  expect(gendiff(filepath3, filepath3, 'json')).toBe('{}');
+  expect(gendiff(filepath1, filepath2, 'json')).toBe(expected12Json);
+  expect(gendiff(filepath1, filepath3, 'json')).toBe(expected1eJson);
+  expect(gendiff(filepath3, filepath1, 'json')).toBe(expectede1Json);
 });
 
 test('gendiff(json) yaml as lib use', () => {
@@ -364,12 +146,8 @@ test('gendiff(json) yaml as lib use', () => {
   const filepath2 = path.join(__dirname, '..', '__fixtures__', 'yaml2.yml');
   const filepath3 = path.join(__dirname, '..', '__fixtures__', 'emptyYAML.yml');
 
-  const yaml1 = parsers(filepath1);
-  const yaml2 = parsers(filepath2);
-  const emptyYAML = parsers(filepath3);
-
-  expect(gendiff(emptyYAML, emptyYAML, 'json')).toBe('{}');
-  expect(gendiff(yaml1, yaml2, 'json')).toBe(expected12Json);
-  expect(gendiff(yaml1, emptyYAML, 'json')).toBe(expected1eJson);
-  expect(gendiff(emptyYAML, yaml1, 'json')).toBe(expectede1Json);
+  expect(gendiff(filepath3, filepath3, 'json')).toBe('{}');
+  expect(gendiff(filepath1, filepath2, 'json')).toBe(expected12Json);
+  expect(gendiff(filepath1, filepath3, 'json')).toBe(expected1eJson);
+  expect(gendiff(filepath3, filepath1, 'json')).toBe(expectede1Json);
 });
