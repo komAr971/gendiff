@@ -10,28 +10,44 @@ const genDiffTree = (obj1, obj2) => {
     return {};
   }
 
-  return keys.map((key) => {
-    const diffItem = { key };
-    if (!_.has(obj1, key)) {
-      diffItem.type = 'added';
-      diffItem.value = obj2[key];
-    } else if (!_.has(obj2, key)) {
-      diffItem.type = 'removed';
-      diffItem.value = obj1[key];
-    } else if (_.isEqual(obj1[key], obj2[key])) {
-      diffItem.type = 'not updated';
-      diffItem.value = obj1[key];
-    } else {
-      diffItem.type = 'updated';
-      if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
-        diffItem.children = genDiffTree(obj1[key], obj2[key]);
-      } else {
-        diffItem.oldValue = obj1[key];
-        diffItem.newValue = obj2[key];
-      }
+  const genDiffItem = (key, value1, value2) => {
+    if (value1 === undefined) {
+      return {
+        key,
+        type: 'added',
+        value: value2,
+      };
     }
-    return diffItem;
-  });
+    if (value2 === undefined) {
+      return {
+        key,
+        type: 'removed',
+        value: value1,
+      };
+    }
+    if (_.isEqual(value1, value2)) {
+      return {
+        key,
+        type: 'not updated',
+        value: value1,
+      };
+    }
+    if (_.isObject(value1) && _.isObject(value2)) {
+      return {
+        key,
+        type: 'updated',
+        children: genDiffTree(value1, value2),
+      };
+    }
+    return {
+      key,
+      type: 'updated',
+      oldValue: value1,
+      newValue: value2,
+    };
+  };
+
+  return keys.map((key) => genDiffItem(key, obj1[key], obj2[key]));
 };
 
 const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
