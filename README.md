@@ -7,4 +7,4 @@
 
 ### Usage
 
-[![asciicast](https://asciinema.org/a/fm4iMUoVfa110KIYAOxaMIyeS.svg)](https://asciinema.org/a/fm4iMUoVfa110KIYAOxaMIyeS)
+[![asciicast](https://asciinema.org/a/23bAbCKwJWryHIEwDjxl0zefM.svg)](https://asciinema.org/a/23bAbCKwJWryHIEwDjxl0zefM)
