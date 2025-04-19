@@ -1,7 +1,11 @@
-install: install-deps
+install: 
+	npm ci
 
 install-deps:
-	npm ci
+	install-deps
+
+link:
+	npm link
 
 test:
 	npm test
