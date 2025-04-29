@@ -15,9 +15,10 @@ const iter = (currentValue, prefix = '') => {
       .join('\n');
   }
 
-  const { type, key, value } = currentValue;
+  const { type, key } = currentValue;
 
   if (type === 'added') {
+    const { value } = currentValue;
     return `Property '${prefix}${key}' was added with value: ${getStrValue(value)}`;
   }
   if (type === 'removed') {

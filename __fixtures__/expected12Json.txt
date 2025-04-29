@@ -1,7 +1,7 @@
 [
   {
     "key": "common",
-    "type": "updated",
+    "type": "children updated",
     "children": [
       {
         "key": "follow",
@@ -38,11 +38,11 @@
       },
       {
         "key": "setting6",
-        "type": "updated",
+        "type": "children updated",
         "children": [
           {
             "key": "doge",
-            "type": "updated",
+            "type": "children updated",
             "children": [
               {
                 "key": "wow",
@@ -68,7 +68,7 @@
   },
   {
     "key": "group1",
-    "type": "updated",
+    "type": "children updated",
     "children": [
       {
         "key": "baz",
