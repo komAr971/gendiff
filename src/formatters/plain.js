@@ -1,42 +1,43 @@
-import _ from 'lodash';
+import _ from 'lodash'
 
 const getStrValue = (value) => {
   if (_.isObject(value)) {
-    return '[complex value]';
+    return '[complex value]'
   }
-  return _.isString(value) ? `'${value}'` : value;
-};
+  return _.isString(value) ? `'${value}'` : value
+}
 
 const iter = (currentValue, prefix = '') => {
   if (Array.isArray(currentValue)) {
     return currentValue
-      .filter((item) => item.type !== 'not updated')
-      .map((line) => iter(line, `${prefix === '' ? '' : `${prefix}.`}`))
-      .join('\n');
+      .filter(item => item.type !== 'not updated')
+      .map(line => iter(line, `${prefix === '' ? '' : `${prefix}.`}`))
+      .join('\n')
   }
 
-  const { type, key, value } = currentValue;
+  const { type, key } = currentValue
 
   if (type === 'added') {
-    return `Property '${prefix}${key}' was added with value: ${getStrValue(value)}`;
+    const { value } = currentValue
+    return `Property '${prefix}${key}' was added with value: ${getStrValue(value)}`
   }
   if (type === 'removed') {
-    return `Property '${prefix}${key}' was removed`;
+    return `Property '${prefix}${key}' was removed`
   }
   if (currentValue.children) {
-    return iter(currentValue.children, `${prefix}${key}`);
+    return iter(currentValue.children, `${prefix}${key}`)
   }
   return `Property '${prefix}${key}' was updated. From ${getStrValue(
     currentValue.oldValue,
-  )} to ${getStrValue(currentValue.newValue)}`;
-};
+  )} to ${getStrValue(currentValue.newValue)}`
+}
 
 const plain = (diff) => {
   if (_.isEmpty(diff)) {
-    return '';
+    return ''
   }
 
-  return iter(diff);
-};
+  return iter(diff)
+}
 
-export default plain;
+export default plain
