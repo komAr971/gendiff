@@ -33,6 +33,6 @@ export default defineConfig([{
     '@stylistic/comma-dangle': ['error', 'always-multiline'],
     '@stylistic/eol-last': ['error', 'always'],
     '@stylistic/arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
-    '@stylistic/quote-props': ['error', 'as-needed'],
+    '@stylistic/quote-props': ['error', 'consistent-as-needed'],
   },
 }])

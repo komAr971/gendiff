@@ -3,8 +3,8 @@ import _ from 'lodash'
 const replacer = ' '
 const spacesCount = 4
 const prefix = {
-  added: '+ ',
-  removed: '- ',
+  'added': '+ ',
+  'removed': '- ',
   'not updated': '  ',
   'children updated': '  ',
 }
