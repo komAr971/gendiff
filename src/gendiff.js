@@ -55,7 +55,7 @@ const genDiffTree = (obj1, obj2) => {
     }
   }
 
-  return keys.map((key) => genDiffItem(key, obj1[key], obj2[key]))
+  return keys.map(key => genDiffItem(key, obj1[key], obj2[key]))
 }
 
 const genDiff = (filepath1, filepath2, formatName = 'stylish') => {

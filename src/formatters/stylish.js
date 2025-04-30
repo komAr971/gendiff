@@ -34,7 +34,7 @@ const iter = (diffItem, depth) => {
     const { children } = diffItem
     return [
       `${currentIndent}${prefix[type]}${key}: {`,
-      `${children.map((child) => iter(child, depth + 1)).join('\n')}`,
+      `${children.map(child => iter(child, depth + 1)).join('\n')}`,
       `${bracketIndent}${replacer.repeat(spacesCount)}}`,
     ].join('\n')
   }
@@ -66,7 +66,7 @@ const stylish = (diff) => {
     return '{}'
   }
 
-  return `{\n${diff.map((diffItem) => iter(diffItem, 1)).join('\n')}\n}`
+  return `{\n${diff.map(diffItem => iter(diffItem, 1)).join('\n')}\n}`
 }
 
 export default stylish

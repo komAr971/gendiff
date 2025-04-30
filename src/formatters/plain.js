@@ -10,8 +10,8 @@ const getStrValue = (value) => {
 const iter = (currentValue, prefix = '') => {
   if (Array.isArray(currentValue)) {
     return currentValue
-      .filter((item) => item.type !== 'not updated')
-      .map((line) => iter(line, `${prefix === '' ? '' : `${prefix}.`}`))
+      .filter(item => item.type !== 'not updated')
+      .map(line => iter(line, `${prefix === '' ? '' : `${prefix}.`}`))
       .join('\n')
   }
 

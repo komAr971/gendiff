@@ -1,15 +1,10 @@
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import stylisticJs from '@stylistic/eslint-plugin'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 export default defineConfig([{
   plugins: {
-    '@stylistic': stylisticJs
+    '@stylistic': stylisticJs,
   },
 
   languageOptions: {
@@ -26,6 +21,7 @@ export default defineConfig([{
     'no-console': 0,
     'no-unused-expressions': 0,
     'no-continue': 0,
+    'no-unused-vars': 'error',
 
     'no-underscore-dangle': [2, {
       allow: ['__filename', '__dirname'],
@@ -34,5 +30,9 @@ export default defineConfig([{
     '@stylistic/semi': ['error', 'never'],
     '@stylistic/quotes': ['error', 'single'],
     '@stylistic/indent': ['error', 2],
+    '@stylistic/comma-dangle': ['error', 'always-multiline'],
+    '@stylistic/eol-last': ['error', 'always'],
+    '@stylistic/arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
+    '@stylistic/quote-props': ['error', 'as-needed'],
   },
 }])
