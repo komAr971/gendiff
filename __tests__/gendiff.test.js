@@ -1,12 +1,12 @@
-import { test, expect, describe } from '@jest/globals';
-import { fileURLToPath } from 'url';
-import path from 'path';
-import fs from 'fs';
+import { test, expect, describe } from '@jest/globals'
+import { fileURLToPath } from 'url'
+import path from 'path'
+import fs from 'fs'
 
-import gendiff from '../index.js';
+import gendiff from '../index.js'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 describe.each([
   {
@@ -85,11 +85,11 @@ describe.each([
   file1, file2, fileExpected, type,
 }) => {
   test(`${file1} ${file2} ${type} ${fileExpected}`, () => {
-    const filepath1 = path.join(__dirname, '..', '__fixtures__', file1);
-    const filepath2 = path.join(__dirname, '..', '__fixtures__', file2);
-    const filepathExpected = path.join(__dirname, '..', '__fixtures__', fileExpected);
-    const expected = fs.readFileSync(filepathExpected, 'utf8');
+    const filepath1 = path.join(__dirname, '..', '__fixtures__', file1)
+    const filepath2 = path.join(__dirname, '..', '__fixtures__', file2)
+    const filepathExpected = path.join(__dirname, '..', '__fixtures__', fileExpected)
+    const expected = fs.readFileSync(filepathExpected, 'utf8')
 
-    expect(gendiff(filepath1, filepath2, type)).toBe(expected);
-  });
-});
+    expect(gendiff(filepath1, filepath2, type)).toBe(expected)
+  })
+})

@@ -1,15 +1,15 @@
-import yaml from 'js-yaml';
+import yaml from 'js-yaml'
 
 const parsers = (data, type) => {
   if (type === 'json') {
-    return JSON.parse(data);
+    return JSON.parse(data)
   }
 
   if (type === 'yaml') {
-    return yaml.load(data);
+    return yaml.load(data)
   }
 
-  throw new Error(`Unknown type ${type}`);
-};
+  throw new Error(`Unknown type ${type}`)
+}
 
-export default parsers;
+export default parsers
